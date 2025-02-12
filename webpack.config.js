@@ -8,19 +8,29 @@ module.exports = {
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
+    assetModuleFilename: "images/[hash][ext][query]", // Custom output for images
   },
   devServer: {
-    contentBase: "./dist",
-    hot: true,
+    static: {
+      directory: path.join(__dirname, "dist"),
+    },
+    compress: true,
+    port: 9000,
   },
+
   module: {
     rules: [
       {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
       },
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        type: "asset/resource", // Handles images properly
+      },
     ],
   },
+
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
